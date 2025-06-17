@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "username": "User1",
+    "password": "1234",
+    "email": "mcperson.human@example.com",
+    "firstName": "Human",
+    "lastName": "McPerson",
+    "avatar": "/uploads/1749739308147-avatar2.jpg"
+  },
+  {
+    "id": 2,
+    "username": "User2",
+    "password": "1122",
+    "email": "chuck.norris@instance.com",
+    "firstName": "Chuck",
+    "lastName": "Norris",
+    "avatar": "/uploads/1750058379326-avatar2.jpg"
+  }
+]
