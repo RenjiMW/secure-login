@@ -1,0 +1,30 @@
+html {
+  font-size: 62.5%; // 1rem = 10px
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Nunito", sans-serif;
+  font-size: 1.6rem;
+  color: #ffffff;
+  background-color: #303030;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul,
+ol {
+  list-style: none;
+  padding-left: 0;
+}
+
+button {
+  cursor: pointer;
+  // padding: 0.4rem 5rem;
+  // border-radius: 14px;
+  // font-size: 2rem;
+  // font-weight: bold;
+}

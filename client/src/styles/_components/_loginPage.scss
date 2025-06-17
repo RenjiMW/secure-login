@@ -1,0 +1,50 @@
+.loginContainer {
+  text-align: center;
+  width: 30rem;
+  margin: 0 auto;
+  height: 100vh;
+}
+
+.loginTitle {
+  font-size: 3rem;
+  margin-top: 12rem;
+}
+
+.loginForm {
+  margin-top: 8rem;
+  font-size: 1.6rem;
+
+  &__rowsLayout {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+
+  &__usernameDiv {
+    margin-bottom: 1.8rem;
+  }
+
+  //   &__label {
+  //     margin-right: 7px;
+  //   }
+
+  &__input {
+    width: 100%;
+    font-size: 1.5rem;
+    border-radius: 6px;
+  }
+
+  //   &__passwordDiv {
+  //     margin-bottom: 1.5rem;
+  //   }
+
+  &__submitBtn {
+    margin-top: 4rem;
+    padding: 0.4rem 5rem;
+    border-radius: 14px;
+    font-size: 2rem;
+    font-weight: bold;
+  }
+}

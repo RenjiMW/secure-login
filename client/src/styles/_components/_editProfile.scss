@@ -1,0 +1,151 @@
+.editProfile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 4rem;
+
+  &__img {
+    width: 12rem;
+    height: 12rem;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    margin-bottom: 2rem;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &__rowsLayout {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    // margin-left: 10%;
+    // margin-right: 10%;
+  }
+
+  &__avatarLabelContiner {
+    margin: auto;
+  }
+
+  &__input {
+    width: 25rem;
+  }
+
+  &__btn {
+    width: 14rem;
+    border-radius: 14px;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-top: 4rem;
+
+    &.cancelEdit {
+      margin-top: 1rem;
+    }
+
+    &:hover {
+      background-color: #ffffff;
+    }
+  }
+
+  &__upload {
+    grid-area: btnUpload;
+    height: 33px;
+    background-color: rgb(240, 240, 240);
+    color: black;
+    text-align: center;
+    border: 2px outset rgb(0, 0, 0);
+    cursor: pointer;
+  }
+
+  &__deleteAvatar {
+    grid-area: btnDelete;
+  }
+
+  &__upload,
+  &__deleteAvatar {
+    margin-top: 0;
+  }
+
+  &__error {
+    color: #d9534f;
+    background-color: #f9d6d5;
+    padding: 0.5rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    font-weight: bold;
+  }
+
+  /////////////////////////////////////////
+  /// MEDIA QUERIES
+  @media (min-width: 768px) {
+    &__avatarLayout {
+      // border: red 2px solid;
+      display: grid;
+      grid-template-columns: auto auto;
+      grid-template-rows: 1fr 1fr;
+      grid-template-areas:
+        "avatar btnUpload"
+        "avatar btnDelete";
+    }
+
+    &__avatarLabelContiner {
+      grid-area: avatar;
+      margin: 1rem;
+      // background-color: rgb(65, 157, 38);
+    }
+
+    // &__avatarLabel {
+    // }
+
+    &__img {
+      margin: 0;
+    }
+
+    &__upload {
+      margin-top: 2rem;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .editProfile {
+    margin-top: 6%;
+
+    &__avatarLayout {
+      display: grid;
+      grid-template-columns: auto auto;
+      grid-template-rows: 1fr 1fr;
+      grid-template-areas:
+        "avatar btnUpload"
+        "avatar btnDelete";
+    }
+
+    &__avatarLabelContiner {
+      grid-area: avatar;
+      margin: 1rem;
+    }
+
+    &__img {
+      margin: 0;
+    }
+
+    &__upload {
+      margin-top: 2rem;
+    }
+  }
+}
+
+.fileUpload__inputHidden {
+  display: none;
+}
+
+.avatarContainer {
+  display: flex;
+  align-items: center;
+
+  margin-bottom: 1rem;
+}
