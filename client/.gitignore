@@ -10,7 +10,7 @@ lerna-debug.log*
 node_modules
 .env
 uploads/
-dist
+
 dist-ssr
 *.local
 
@@ -27,7 +27,7 @@ dist-ssr
 Thumbs.db
 
 # Vite & build output
-dist/
+
 .vite/
 
 # Ignore all files in sessions/

@@ -7,10 +7,9 @@ function Profile() {
 
   useEffect(() => {
     console.log("Fetching user data on /profile mount");
-    `${import.meta.env.VITE_API_URL}/api/login`;
 
     // "http://localhost:3001/api/user"
-    fetch(`${import.meta.env.VITE_API_URL}/api/user`, {
+    fetch(`/api/user`, {
       credentials: "include",
     })
       .then((res) => {
@@ -24,7 +23,7 @@ function Profile() {
   useEffect(() => {
     if (!sessionStorage.getItem("loggedIn")) {
       // "http://localhost:3001/api/logout"
-      fetch(`${import.meta.env.VITE_API_URL}/api/logout`, {
+      fetch(`/api/logout`, {
         method: "POST",
         credentials: "include",
       }).finally(() => navigate("/login"));
@@ -55,7 +54,7 @@ function Profile() {
           className="profileHeader__logoutBtn"
           onClick={async () => {
             // "http://localhost:3001/api/logout";
-            await fetch(`${import.meta.env.VITE_API_URL}/api/logout`, {
+            await fetch(`/api/logout`, {
               method: "POST",
               credentials: "include",
             });
