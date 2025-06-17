@@ -278,9 +278,10 @@ app.use((err, req, res, next) => {
 ////////////////////////////////////////
 ///// ====== SERVER LISTEN ====== ////
 
-app.listen(3001, () => console.log("Server running on http://localhost:3001"));
+// app.listen(3001, () => console.log("Server running on http://localhost:3001"));
 
 // this is just for testing
-// app.listen(3001, "0.0.0.0", () => {
-//   console.log("Server running on http://0.0.0.0:3001 (accessible in LAN)");
-// });
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
