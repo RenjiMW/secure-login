@@ -9,7 +9,7 @@ function Profile() {
     console.log("Fetching user data on /profile mount");
 
     // "http://localhost:3001/api/user"
-    fetch(`/api/user`, {
+    fetch(`http://localhost:3001/api/user`, {
       credentials: "include",
     })
       .then((res) => {
@@ -23,7 +23,7 @@ function Profile() {
   useEffect(() => {
     if (!sessionStorage.getItem("loggedIn")) {
       // "http://localhost:3001/api/logout"
-      fetch(`/api/logout`, {
+      fetch(`http://localhost:3001/api/logout`, {
         method: "POST",
         credentials: "include",
       }).finally(() => navigate("/login"));
@@ -54,7 +54,7 @@ function Profile() {
           className="profileHeader__logoutBtn"
           onClick={async () => {
             // "http://localhost:3001/api/logout";
-            await fetch(`/api/logout`, {
+            await fetch(`http://localhost:3001/api/logout`, {
               method: "POST",
               credentials: "include",
             });

@@ -40,7 +40,7 @@ app.use(
     cookie: {
       httpOnly: true,
       sameSite: "lax",
-      secure: true, // było false
+      secure: false, // TODO: dla deplymentu powinno być true
     },
   })
 );
@@ -76,11 +76,25 @@ app.use(
   express.static(path.join(__dirname, "uploads"))
 );
 
+/* 
+// only for deployment
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
+// only for deployment
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/dist/index.html"));
 });
+
+// ALTERNATIVE  
+// and use bash: cross-env NODE_ENV=production node index.js
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../client/dist")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../client/dist/index.html"));
+  });
+}
+*/
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -278,10 +292,12 @@ app.use((err, req, res, next) => {
 ////////////////////////////////////////
 ///// ====== SERVER LISTEN ====== ////
 
-// app.listen(3001, () => console.log("Server running on http://localhost:3001"));
+app.listen(3001, () => console.log("Server running on http://localhost:3001"));
 
 // this is just for testing
+/*
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+*/

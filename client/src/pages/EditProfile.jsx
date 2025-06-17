@@ -64,7 +64,7 @@ function EditProfile() {
       dispatch({ type: "setUser", payload: initialState });
 
       // "http://localhost:3001/api/user"
-      fetch(`/api/user`, {
+      fetch(`http://localhost:3001/api/user`, {
         credentials: "include",
       })
         .then((res) => {
@@ -145,7 +145,7 @@ function EditProfile() {
     }
 
     // "http://localhost:3001/api/update-profile"
-    const res = await fetch(`/api/update-profile`, {
+    const res = await fetch(`http://localhost:3001/api/update-profile`, {
       method: "POST",
       credentials: "include",
       body: formData,
@@ -171,7 +171,7 @@ function EditProfile() {
 
     // "http://localhost:3001/api/delete-avatar"
     try {
-      const res = await fetch(`/api/delete-avatar`, {
+      const res = await fetch(`http://localhost:3001/api/delete-avatar`, {
         method: "POST",
         credentials: "include",
       });
