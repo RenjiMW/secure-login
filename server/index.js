@@ -126,7 +126,7 @@ app.post(
 );
 
 ///////////////////////////////////////////////
-///// ====== GET USER DATA ====== /////////////
+///// ======= GET USER DATA ======== /////////////
 app.get("/api/user", (req, res) => {
   console.log("AUTH CHECK:", {
     sessionID: req.sessionID,
