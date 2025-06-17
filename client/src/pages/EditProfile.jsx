@@ -63,7 +63,8 @@ function EditProfile() {
       setIsLoading(true);
       dispatch({ type: "setUser", payload: initialState });
 
-      fetch("http://localhost:3001/api/user", {
+      // "http://localhost:3001/api/user"
+      fetch(`${import.meta.env.VITE_API_URL}/api/user`, {
         credentials: "include",
       })
         .then((res) => {
@@ -143,11 +144,15 @@ function EditProfile() {
       formData.append("avatar", avatar);
     }
 
-    const res = await fetch("http://localhost:3001/api/update-profile", {
-      method: "POST",
-      credentials: "include",
-      body: formData,
-    });
+    // "http://localhost:3001/api/update-profile"
+    const res = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/update-profile`,
+      {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      }
+    );
 
     if (res.ok) {
       navigate("/profile");
@@ -167,11 +172,15 @@ function EditProfile() {
     );
     if (!confirmed) return;
 
+    // "http://localhost:3001/api/delete-avatar"
     try {
-      const res = await fetch("http://localhost:3001/api/delete-avatar", {
-        method: "POST",
-        credentials: "include",
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/delete-avatar`,
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
 
       if (res.ok) {
         dispatch({ type: "avatarChange", payload: null });
