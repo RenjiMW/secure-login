@@ -76,6 +76,10 @@ app.use(
   express.static(path.join(__dirname, "uploads"))
 );
 
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/dist/index.html"));
+});
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.join(__dirname, "uploads"));
