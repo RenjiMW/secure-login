@@ -40,7 +40,7 @@ app.use(
     cookie: {
       httpOnly: true,
       sameSite: "lax",
-      secure: false,
+      secure: true, // było false
     },
   })
 );
