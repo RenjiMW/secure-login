@@ -64,7 +64,7 @@ function EditProfile() {
       dispatch({ type: "setUser", payload: initialState });
 
       // "http://localhost:3001/api/user"
-      fetch(`/api/user`, {
+      fetch(`${import.meta.env.VITE_API_URL}/api/user`, {
         credentials: "include",
       })
         .then((res) => {
@@ -145,11 +145,14 @@ function EditProfile() {
     }
 
     // "http://localhost:3001/api/update-profile"
-    const res = await fetch(`/api/update-profile`, {
-      method: "POST",
-      credentials: "include",
-      body: formData,
-    });
+    const res = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/update-profile`,
+      {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      }
+    );
 
     if (res.ok) {
       navigate("/profile");
@@ -171,10 +174,13 @@ function EditProfile() {
 
     // "http://localhost:3001/api/delete-avatar"
     try {
-      const res = await fetch(`/api/delete-avatar`, {
-        method: "POST",
-        credentials: "include",
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/delete-avatar`,
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
 
       if (res.ok) {
         dispatch({ type: "avatarChange", payload: null });
@@ -229,7 +235,7 @@ function EditProfile() {
                   avatar instanceof File
                     ? URL.createObjectURL(avatar)
                     : avatar
-                    ? `http://localhost:3001${avatar}`
+                    ? `${import.meta.env.VITE_API_URL}${avatar}`
                     : "/imgs/account-default-w.png"
                 }
                 alt="Avatar image"

@@ -23,11 +23,11 @@ function Login() {
     }
 
     const cleanUsername = sanitizeInput(username);
-    const cleanPassword = sanitizeInput(password);
+    const cleanPassword = password;
 
     // "http://localhost:3001/api/login"
     try {
-      const res = await fetch(`/api/login`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/login`, {
         method: "POST",
         credentials: "include",
         headers: {
