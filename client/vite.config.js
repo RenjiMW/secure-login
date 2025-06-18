@@ -1,6 +1,25 @@
+// for deployment on Render
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
-/** 
+import { fileURLToPath } from "url";
+import { dirname, resolve } from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+export default defineConfig({
+  plugins: [react()],
+  build: {
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, "index.html"),
+      },
+    },
+  },
+});
+
+////////////////////////////////////////////////
+/* FOR local testin
 // https://vite.dev/config/
 export default defineConfig({
   base: "/secure-login/",
@@ -12,11 +31,6 @@ export default defineConfig({
   },
 });
 */
-export default defineConfig({
-  plugins: [react()],
-});
-
-////////////////////////////////////////////////
 
 /* 
 //

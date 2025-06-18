@@ -40,7 +40,7 @@ app.use(
     cookie: {
       httpOnly: true,
       sameSite: "lax",
-      secure: process.env.NODE_ENV === "production", // działa lokalnie i na Renderze
+      secure: true, // NODE_ENV === 'production'
     },
   })
 );
