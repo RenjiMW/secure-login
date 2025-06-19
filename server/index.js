@@ -18,6 +18,12 @@ app.set("trust proxy", 1);
 app.use(
   helmet({
     crossOriginResourcePolicy: { policy: "cross-origin" },
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        imgSrc: ["'self'", "data:", "blob:"], // ← to dodaje blob i data images
+      },
+    },
   })
 );
 
