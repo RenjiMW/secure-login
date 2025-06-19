@@ -229,7 +229,7 @@ function EditProfile() {
                   avatar instanceof File
                     ? URL.createObjectURL(avatar)
                     : avatar
-                    ? `${import.meta.env.VITE_API_URL}${avatar}`
+                    ? avatar
                     : "/imgs/account-default-w.png"
                 }
                 alt="Avatar image"

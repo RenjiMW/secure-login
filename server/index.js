@@ -16,13 +16,10 @@ const app = express();
 app.set("trust proxy", 1);
 
 app.use(
-  helmet({
-    crossOriginResourcePolicy: { policy: "cross-origin" },
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        imgSrc: ["'self'", "data:", "blob:"], // ← to dodaje blob i data images
-      },
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      imgSrc: ["'self'", "data:", "blob:"],
     },
   })
 );
@@ -69,8 +66,8 @@ app.use(
   })
 );
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+app.use("/api/", express.json());
+app.use("/api/", express.urlencoded({ extended: true }));
 
 // Konfiguracja katalogu uploadów
 const __filename = fileURLToPath(import.meta.url);

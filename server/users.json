@@ -1,20 +1,20 @@
 [
   {
     "id": 1,
-    "username": "User1",
-    "password": "1234",
+    "username": "John",
+    "password": "123qwe",
     "email": "mcperson.human@example.com",
     "firstName": "Human",
     "lastName": "McPerson",
-    "avatar": "/uploads/1749739308147-avatar2.jpg"
+    "avatar": "/imgs/account-default-w.png"
   },
   {
     "id": 2,
-    "username": "User2",
-    "password": "1122",
+    "username": "Jerry",
+    "password": "890iop",
     "email": "chuck.norris@instance.com",
     "firstName": "Chuck",
     "lastName": "Norris",
-    "avatar": "/uploads/1750058379326-avatar2.jpg"
+    "avatar": "/imgs/account-default-w.png"
   }
 ]
