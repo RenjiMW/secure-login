@@ -13,6 +13,8 @@ import { getUsers } from "./auth/passport-config.js";
 import { fileURLToPath } from "url";
 
 const app = express();
+app.set("trust proxy", 1);
+
 app.use(
   helmet({
     crossOriginResourcePolicy: { policy: "cross-origin" },
