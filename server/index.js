@@ -81,12 +81,6 @@ app.use(
 // for deployment on Render
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-app.use(express.static(path.join(__dirname, "../client/dist")));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/dist/index.html"));
-});
-
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.join(__dirname, "uploads"));
@@ -128,7 +122,6 @@ app.post(
   (req, res) => {
     console.log("LOGIN SUCCESS:", req.user);
     console.log("SESSION ID:", req.sessionID); // 💡 dodaj to
-    res.setHeader("Set-Cookie", req.headers.cookie); // 💡 pomocnicze
     res.json({ success: true, user: req.user });
   }
 );
@@ -266,6 +259,12 @@ app.post("/api/delete-avatar", (req, res) => {
     }
     res.json({ message: "Avatar deleted" });
   });
+});
+
+app.use(express.static(path.join(__dirname, "../client/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/dist/index.html"));
 });
 
 ////////////////////////////////////////
