@@ -39,7 +39,7 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      sameSite: "none",
+      sameSite: "lax",
       secure: true, // NODE_ENV === 'production'
     },
   })
@@ -122,10 +122,13 @@ app.post(
   (req, res, next) => {
     req.body.username = xss(req.body.username);
     req.body.password = xss(req.body.password);
-    next(); // idź dalej do Passporta
+    next();
   },
   passport.authenticate("local"),
   (req, res) => {
+    console.log("LOGIN SUCCESS:", req.user);
+    console.log("SESSION ID:", req.sessionID); // 💡 dodaj to
+    res.setHeader("Set-Cookie", req.headers.cookie); // 💡 pomocnicze
     res.json({ success: true, user: req.user });
   }
 );
