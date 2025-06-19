@@ -1,8 +1,8 @@
 [
   {
     "id": 1,
-    "username": "John",
-    "password": "123qwe",
+    "username": "skybug5",
+    "password": "mix852",
     "email": "mcperson.human@example.com",
     "firstName": "Human",
     "lastName": "McPerson",
@@ -10,8 +10,8 @@
   },
   {
     "id": 2,
-    "username": "Jerry",
-    "password": "890iop",
+    "username": "zapfox3",
+    "password": "sun456",
     "email": "chuck.norris@instance.com",
     "firstName": "Chuck",
     "lastName": "Norris",
