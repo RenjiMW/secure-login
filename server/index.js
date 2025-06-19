@@ -63,6 +63,7 @@ app.use(
   })
 );
 
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Konfiguracja katalogu uploadów
@@ -263,12 +264,6 @@ app.post("/api/delete-avatar", (req, res) => {
   });
 });
 
-app.use(express.static(path.join(__dirname, "../client/dist")));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/dist/index.html"));
-});
-
 ////////////////////////////////////////
 ///// ====== HANDLE MULTER ERROR ====== ////
 
@@ -281,6 +276,12 @@ app.use((err, req, res, next) => {
   console.error("Unexpected error:", err);
   res.status(500).json({ message: "Unexpected server error" });
   next(err);
+});
+
+app.use(express.static(path.join(__dirname, "../client/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/dist/index.html"));
 });
 
 //
