@@ -66,6 +66,9 @@ app.use(
   })
 );
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 // Konfiguracja katalogu uploadów
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -159,6 +162,10 @@ app.post("/api/logout", (req, res) => {
 ///// ====== UPDATE PROFILE ====== ////
 
 app.post("/api/update-profile", upload.single("avatar"), (req, res) => {
+  console.log("------ UPDATE PROFILE ------");
+  console.log("req.file:", req.file); // 🟢 czy widać?
+  console.log("req.body:", req.body); // 🟢 dane tekstowe
+
   if (!req.isAuthenticated()) {
     return res.status(401).json({ message: "Unauthorized" });
   }
@@ -278,9 +285,6 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: "Unexpected server error" });
   next(err);
 });
-
-app.use("/api/", express.json());
-app.use("/api/", express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, "../client/dist")));
 

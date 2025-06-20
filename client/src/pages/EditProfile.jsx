@@ -144,19 +144,31 @@ function EditProfile() {
       formData.append("avatar", avatar);
     }
 
-    // "http://localhost:3001/api/update-profile"
-    const res = await fetch(`/api/update-profile`, {
-      method: "POST",
-      credentials: "include",
-      body: formData,
-    });
-
-    if (res.ok) {
-      navigate("/profile");
-    } else {
-      const data = await res.json();
-      setError(data.message || "There was a problem saving your profile.");
+    try {
+      // "http://localhost:3001/api/update-profile"
+      const res = await fetch(`/api/update-profile`, {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      });
+      if (res.ok) {
+        navigate("/profile");
+      } else {
+        const text = await res.text();
+        setError("Upload error: " + text);
+      }
+    } catch (err) {
+      console.error("Network error:", err);
+      setError("Network error");
     }
+
+    // if (res.ok) {
+    //   const data = await res.json(); // <- tu niepotrzebne, bo nie używasz
+    //   navigate("/profile");
+    // } else {
+    //   const text = await res.text(); // zamiast .json()
+    //   console.error("Upload error:", text);
+    // }
   };
 
   //
