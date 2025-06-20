@@ -124,6 +124,9 @@ const upload = multer({
   },
 });
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 initializePassport(passport);
 app.use(passport.initialize());
 app.use(passport.session());
@@ -133,6 +136,8 @@ app.use(passport.session());
 app.post(
   "/api/login",
   (req, res, next) => {
+    console.log("REQ BODY:", req.body);
+
     req.body.username = xss(req.body.username);
     req.body.password = xss(req.body.password);
     next();
@@ -284,9 +289,6 @@ app.post("/api/delete-avatar", (req, res) => {
     res.json({ message: "Avatar deleted" });
   });
 });
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 ////////////////////////////////////////
 ///// ====== HANDLE MULTER ERROR ====== ////
