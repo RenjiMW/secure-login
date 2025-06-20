@@ -215,6 +215,7 @@ app.post("/api/update-profile", upload.single("avatar"), (req, res) => {
   users[userIndex].lastName = lastName;
 
   if (req.file) {
+    console.log("req.file:", req.file);
     const oldAvatar = users[userIndex].avatar;
     if (oldAvatar && oldAvatar.startsWith("/uploads/")) {
       const oldPath = path.join(__dirname, oldAvatar);

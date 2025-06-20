@@ -1,4 +1,6 @@
 node_modules/
-uploads/
+uploads/*
+!uploads/.gitkeep
+!uploads/account-default-w.png
 sessions/
 .env

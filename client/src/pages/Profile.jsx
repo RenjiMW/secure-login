@@ -37,11 +37,7 @@ function Profile() {
       <section className="profileHeader">
         <img
           className="profileHeader__img"
-          src={
-            user.avatar
-              ? `http://localhost:3001${user.avatar}`
-              : "/imgs/account-default-w.png"
-          }
+          src={user.avatar ? user.avatar : "/uploads/account-default-w.png"}
           alt="Profile"
         />
 

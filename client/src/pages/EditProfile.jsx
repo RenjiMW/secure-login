@@ -230,7 +230,7 @@ function EditProfile() {
                     ? URL.createObjectURL(avatar)
                     : avatar
                     ? avatar
-                    : "/imgs/account-default-w.png"
+                    : "/uploads/account-default-w.png"
                 }
                 alt="Avatar image"
               />
