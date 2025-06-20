@@ -240,9 +240,7 @@ function EditProfile() {
                 src={
                   avatar instanceof File
                     ? URL.createObjectURL(avatar)
-                    : avatar
-                    ? avatar
-                    : "/uploads/account-default-w.png"
+                    : avatar || "/uploads/account-default-w.png"
                 }
                 alt="Avatar image"
               />
