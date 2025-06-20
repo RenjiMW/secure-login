@@ -68,19 +68,19 @@ app.use(
 
 // app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));
-app.use((req, res, next) => {
-  const contentType = req.headers["content-type"] || "";
-  if (
-    contentType.startsWith("application/json") ||
-    contentType.startsWith("application/x-www-form-urlencoded")
-  ) {
-    express.urlencoded({ extended: true })(req, res, () => {
-      express.json()(req, res, next);
-    });
-  } else {
-    next();
-  }
-});
+// app.use((req, res, next) => {
+//   const contentType = req.headers["content-type"] || "";
+//   if (
+//     contentType.startsWith("application/json") ||
+//     contentType.startsWith("application/x-www-form-urlencoded")
+//   ) {
+//     express.urlencoded({ extended: true })(req, res, () => {
+//       express.json()(req, res, next);
+//     });
+//   } else {
+//     next();
+//   }
+// });
 
 // Konfiguracja katalogu uploadów
 const __filename = fileURLToPath(import.meta.url);
@@ -284,6 +284,9 @@ app.post("/api/delete-avatar", (req, res) => {
     res.json({ message: "Avatar deleted" });
   });
 });
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 ////////////////////////////////////////
 ///// ====== HANDLE MULTER ERROR ====== ////

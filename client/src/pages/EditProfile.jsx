@@ -155,6 +155,7 @@ function EditProfile() {
         navigate("/profile");
       } else {
         const text = await res.text();
+        console.error("Upload error:", text);
         setError("Upload error: " + text);
       }
     } catch (err) {
