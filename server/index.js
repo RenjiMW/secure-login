@@ -66,9 +66,6 @@ app.use(
   })
 );
 
-app.use("/api/", express.json());
-app.use("/api/", express.urlencoded({ extended: true }));
-
 // Konfiguracja katalogu uploadów
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -281,6 +278,9 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: "Unexpected server error" });
   next(err);
 });
+
+app.use("/api/", express.json());
+app.use("/api/", express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
