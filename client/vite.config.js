@@ -52,7 +52,7 @@ export default defineConfig(({ mode }) => {
       // 👇 dostępne w kodzie frontendowym jako import.meta.env.VITE_BACKEND_URL
       "import.meta.env.VITE_BACKEND_URL": JSON.stringify(
         isProduction
-          ? "https://secure-login-full.onrender.com"
+          ? "https://secure-login-full-v2.onrender.com"
           : "http://localhost:3001"
       ),
     },
