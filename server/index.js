@@ -124,6 +124,7 @@ const upload = multer({
   },
 });
 
+// TODO:
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -176,87 +177,122 @@ app.post("/api/logout", (req, res) => {
 });
 
 //
-////////////////////////////////////////
-///// ====== UPDATE PROFILE ====== ////
+///////////////////////////////////////////////////////////////
+// ====== UPDATE PROFILE — aktualizacja profilu użytkownika ===
+// Endpoint odpowiedzialny za edycję danych i avatara użytkownika
+///////////////////////////////////////////////////////////////
 
-app.post("/api/update-profile", upload.single("avatar"), (req, res) => {
-  console.log("------ UPDATE PROFILE ------");
-  console.log("req.file:", req.file); // 🟢 czy widać?
-  console.log("req.body:", req.body); // 🟢 dane tekstowe
-
-  if (!req.isAuthenticated()) {
-    return res.status(401).json({ message: "Unauthorized" });
-  }
-
-  const username = xss(req.body.username);
-  const email = xss(req.body.email);
-  const firstName = xss(req.body.firstName);
-  const lastName = xss(req.body.lastName);
-
-  if (!username || username.length < 3 || username.length > 20) {
-    return res
-      .status(400)
-      .json({ message: "Username must be 3–20 characters long." });
-  }
-
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!email || !emailRegex.test(email)) {
-    return res.status(400).json({ message: "Invalid email address." });
-  }
-
-  if (!firstName || firstName.length > 30) {
-    return res
-      .status(400)
-      .json({ message: "First name is required (max 30 chars)." });
-  }
-
-  if (!lastName || lastName.length > 30) {
-    return res
-      .status(400)
-      .json({ message: "Last name is required (max 30 chars)." });
-  }
-
-  const users = getUsers();
-  const userIndex = users.findIndex((u) => u.id === req.user.id);
-  if (userIndex === -1) {
-    return res.status(404).json({ message: "User not found" });
-  }
-
-  // sprawdzanie czy login nie jest już zajęty (ale nie przez samego siebie)
-  const usernameTaken = users.some(
-    (u, i) => u.username === username && i !== userIndex
-  );
-  if (usernameTaken) {
-    return res.status(400).json({ message: "Username already taken" });
-  }
-
-  // aktualizacja danych
-  users[userIndex].username = username;
-  users[userIndex].email = email;
-  users[userIndex].firstName = firstName;
-  users[userIndex].lastName = lastName;
-
-  if (req.file) {
-    console.log("req.file:", req.file);
-    const oldAvatar = users[userIndex].avatar;
-    if (oldAvatar && oldAvatar.startsWith("/uploads/")) {
-      const oldPath = path.join(__dirname, oldAvatar);
-      fs.unlink(oldPath, (err) => {
-        if (err)
-          console.warn("Nie udało się usunąć starego avatara:", err.message);
-      });
+app.post("/api/update-profile", (req, res, next) => {
+  upload.single("avatar")(req, res, (err) => {
+    if (err instanceof multer.MulterError) {
+      return res.status(400).json({ message: "Multer error: " + err.message });
+    } else if (err) {
+      return res
+        .status(500)
+        .json({ message: "Unexpected Multer error: " + err.message });
     }
 
-    users[userIndex].avatar = `/uploads/${req.file.filename}`;
-  }
+    try {
+      // dalej cały kod z req.file, req.body itd.
+      console.log("REQ FILE:", req.file);
+      console.log("REQ BODY:", req.body);
+      // uwaga: wszystko musi być wewnątrz tego callbacka!
+      if (!req.isAuthenticated()) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
 
-  saveUsers(users);
+      //   const username = xss(req.body.username);
+      // ... cała logika
+      // ============================================================
+      // === WALIDACJA i sanityzacja danych wejściowych =============
 
-  res.json({ message: "Profile updated", user: users[userIndex] });
+      const username = xss(req.body.username);
+      const email = xss(req.body.email);
+      const firstName = xss(req.body.firstName);
+      const lastName = xss(req.body.lastName);
+
+      if (!username || username.length < 3 || username.length > 20) {
+        return res
+          .status(400)
+          .json({ message: "Username must be 3–20 characters long." });
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!email || !emailRegex.test(email)) {
+        return res.status(400).json({ message: "Invalid email address." });
+      }
+
+      if (!firstName || firstName.length > 30) {
+        return res
+          .status(400)
+          .json({ message: "First name is required (max 30 chars)." });
+      }
+
+      if (!lastName || lastName.length > 30) {
+        return res
+          .status(400)
+          .json({ message: "Last name is required (max 30 chars)." });
+      }
+
+      // ===========================================================
+      // === POBIERANIE i aktualizacja użytkownika w bazie =========
+
+      const users = getUsers();
+      const userIndex = users.findIndex((u) => u.id === req.user.id);
+      if (userIndex === -1) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      // Sprawdzenie czy wybrana nazwa użytkownika nie jest już zajęta
+      const usernameTaken = users.some(
+        (u, i) => u.username === username && i !== userIndex
+      );
+      if (usernameTaken) {
+        return res.status(400).json({ message: "Username already taken" });
+      }
+
+      // Aktualizacja danych tekstowych użytkownika
+      users[userIndex].username = username;
+      users[userIndex].email = email;
+      users[userIndex].firstName = firstName;
+      users[userIndex].lastName = lastName;
+
+      // ===========================================================
+      // === OBSŁUGA nowego avatara (jeśli został przesłany) =======
+
+      if (req.file) {
+        const oldAvatar = users[userIndex].avatar;
+
+        // Usunięcie starego pliku jeśli istnieje
+        if (oldAvatar && oldAvatar.startsWith("/uploads/")) {
+          const oldPath = path.join(__dirname, oldAvatar);
+          fs.unlink(oldPath, (err) => {
+            if (err)
+              console.warn(
+                "Nie udało się usunąć starego avatara:",
+                err.message
+              );
+          });
+        }
+
+        // Zapisanie ścieżki do nowego pliku
+        users[userIndex].avatar = `/uploads/${req.file.filename}`;
+      }
+      // -------------------
+      // to dał mi gpt na końcu
+      saveUsers(users);
+      res.json({ message: "Profile updated", user: users[userIndex] });
+    } catch (error) {
+      console.error("Processing error:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
 });
 
-////////////////////////////////////////
-///// ====== DELETE AVATAR ====== ////
+//
+///////////////////////////////////////////////////////////////
+// ====== DELETE AVATAR ======
+///////////////////////////////////////////////////////////////
 
 app.post("/api/delete-avatar", (req, res) => {
   if (!req.isAuthenticated()) {
@@ -290,19 +326,20 @@ app.post("/api/delete-avatar", (req, res) => {
   });
 });
 
+//
 ////////////////////////////////////////
 ///// ====== HANDLE MULTER ERROR ====== ////
 
-app.use((err, req, res, next) => {
-  if (err instanceof multer.MulterError) {
-    return res.status(400).json({ message: "Avatar is too large (max 2 MB)" });
-  } else if (err.message.startsWith("Only ")) {
-    return res.status(400).json({ message: err.message });
-  }
-  console.error("Unexpected error:", err);
-  res.status(500).json({ message: "Unexpected server error" });
-  next(err);
-});
+// app.use((err, req, res, next) => {
+//   if (err instanceof multer.MulterError) {
+//     return res.status(400).json({ message: "Avatar is too large (max 2 MB)" });
+//   } else if (err.message.startsWith("Only ")) {
+//     return res.status(400).json({ message: err.message });
+//   }
+//   console.error("Unexpected error:", err);
+//   res.status(500).json({ message: "Unexpected server error" });
+//   next(err);
+// });
 
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
