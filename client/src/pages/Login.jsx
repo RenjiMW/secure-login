@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 const sanitizeInput = (str) => str.replace(/</g, "").replace(/>/g, "");
 
 function Login() {
@@ -27,7 +29,7 @@ function Login() {
 
     // "http://localhost:3001/api/login"
     try {
-      const res = await fetch(`/api/login`, {
+      const res = await fetch(`${BACKEND_URL}/api/login`, {
         method: "POST",
         credentials: "include",
         headers: {

@@ -24,6 +24,8 @@ app.use(
   })
 );
 
+const isProduction = process.env.NODE_ENV === "production";
+
 const saveUsers = (users) =>
   fs.writeFileSync("users.json", JSON.stringify(users, null, 2));
 
@@ -45,7 +47,7 @@ app.use(
     cookie: {
       httpOnly: true,
       sameSite: "lax",
-      secure: true, // NODE_ENV === 'production'
+      secure: isProduction, // true tylko na Renderze
     },
   })
 );
@@ -61,7 +63,9 @@ app.use(
 // CORS settings (for deployment on Render)
 app.use(
   cors({
-    origin: "https://secure-login-full.onrender.com",
+    origin: isProduction
+      ? "https://secure-login-full.onrender.com"
+      : "http://localhost:5173",
     credentials: true,
   })
 );
@@ -85,6 +89,10 @@ app.use(
 // Konfiguracja katalogu uploadów
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const uploadsDir = path.join(__dirname, "uploads");
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir);
+}
 
 // for local testing
 /** 

@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 function Profile() {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+
+  console.log(user);
 
   useEffect(() => {
     console.log("Fetching user data on /profile mount");
 
     // "http://localhost:3001/api/user"
-    fetch(`/api/user`, {
+    fetch(`${BACKEND_URL}/api/user`, {
       credentials: "include",
     })
       .then((res) => {
@@ -23,7 +27,7 @@ function Profile() {
   useEffect(() => {
     if (!sessionStorage.getItem("loggedIn")) {
       // "http://localhost:3001/api/logout"
-      fetch(`/api/logout`, {
+      fetch(`${BACKEND_URL}/api/logout`, {
         method: "POST",
         credentials: "include",
       }).finally(() => navigate("/login"));
@@ -37,7 +41,11 @@ function Profile() {
       <section className="profileHeader">
         <img
           className="profileHeader__img"
-          src={user.avatar ? user.avatar : "/uploads/account-default-w.png"}
+          src={
+            user.avatar
+              ? `${BACKEND_URL}${user.avatar}`
+              : `${BACKEND_URL}/uploads/account-default-w.png`
+          }
           alt="Profile"
         />
 
@@ -50,7 +58,7 @@ function Profile() {
           className="profileHeader__logoutBtn"
           onClick={async () => {
             // "http://localhost:3001/api/logout";
-            await fetch(`/api/logout`, {
+            await fetch(`${BACKEND_URL}/api/logout`, {
               method: "POST",
               credentials: "include",
             });

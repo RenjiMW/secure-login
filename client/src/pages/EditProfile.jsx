@@ -1,6 +1,8 @@
 import { useEffect, useReducer, useState, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 function sanitizeInput(str) {
   return str.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
@@ -55,6 +57,7 @@ function EditProfile() {
   );
   //////////////////////////////////////////
   /////// ======= RESET FORM ======= //////
+  console.log(username, email, firstName, lastName, avatar);
 
   const resetForm = useCallback(
     (retry = false) => {
@@ -64,7 +67,7 @@ function EditProfile() {
       dispatch({ type: "setUser", payload: initialState });
 
       // "http://localhost:3001/api/user"
-      fetch(`/api/user`, {
+      fetch(`${BACKEND_URL}/api/user`, {
         credentials: "include",
       })
         .then((res) => {
@@ -146,7 +149,7 @@ function EditProfile() {
 
     try {
       // "http://localhost:3001/api/update-profile"
-      const res = await fetch(`/api/update-profile`, {
+      const res = await fetch(`${BACKEND_URL}/api/update-profile`, {
         method: "POST",
         credentials: "include",
         body: formData,
@@ -184,7 +187,7 @@ function EditProfile() {
 
     // "http://localhost:3001/api/delete-avatar"
     try {
-      const res = await fetch(`/api/delete-avatar`, {
+      const res = await fetch(`${BACKEND_URL}/api/delete-avatar`, {
         method: "POST",
         credentials: "include",
       });
@@ -241,7 +244,9 @@ function EditProfile() {
                 src={
                   avatar instanceof File
                     ? URL.createObjectURL(avatar)
-                    : avatar || "/uploads/account-default-w.png"
+                    : avatar
+                    ? `${BACKEND_URL}${avatar}`
+                    : `${BACKEND_URL}/uploads/account-default-w.png`
                 }
                 alt="Avatar image"
               />
