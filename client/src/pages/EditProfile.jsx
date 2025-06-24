@@ -14,7 +14,7 @@ const initialState = {
   email: "",
   firstName: "",
   lastName: "",
-  avatar: null,
+  avatar: "/imgs/account-default-w.png",
 };
 
 function reducer(state, action) {
