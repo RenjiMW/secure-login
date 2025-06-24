@@ -343,14 +343,21 @@ app.post("/api/delete-avatar", (req, res) => {
   }
 
   const oldAvatar = users[userIndex].avatar;
-  if (oldAvatar && oldAvatar.startsWith("/uploads/")) {
-    const oldPath = path.join(__dirname, oldAvatar);
-    fs.unlink(oldPath, (err) => {
-      if (err) {
-        console.warn("Failed to delete avatar:", err.message);
-      }
-    });
+
+  // 🛑 Zablokuj usunięcie domyślnego avatara
+  if (!oldAvatar || !oldAvatar.startsWith("/uploads/")) {
+    return res
+      .status(400)
+      .json({ message: "Default avatar cannot be deleted" });
   }
+
+  // 🗑️ Usuń tylko własne avatary
+  const oldPath = path.join(__dirname, oldAvatar);
+  fs.unlink(oldPath, (err) => {
+    if (err) {
+      console.warn("Failed to delete avatar:", err.message);
+    }
+  });
 
   users[userIndex].avatar = null;
   saveUsers(users);
