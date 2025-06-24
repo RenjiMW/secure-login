@@ -44,7 +44,7 @@ function Profile() {
           src={
             user.avatar
               ? `${BACKEND_URL}${user.avatar}`
-              : `${BACKEND_URL}/uploads/account-default-w.png`
+              : `${BACKEND_URL}/imgs/account-default-w.png`
           }
           alt="Profile"
         />
