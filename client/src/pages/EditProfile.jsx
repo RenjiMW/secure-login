@@ -1,5 +1,7 @@
 import { useEffect, useReducer, useState, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import Modal from "../components/Modal";
+import ModalDelete from "../components/ModalDelete";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -49,6 +51,7 @@ function EditProfile() {
     useReducer(reducer, initialState);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [delConfirmation, setDelConfirmation] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -106,28 +109,28 @@ function EditProfile() {
 
     // VALIDATION
     if (!username || !email || !firstName || !lastName) {
-      alert("All fields are required!");
+      setError("All fields are required!");
       return;
     }
 
     if (username.length < 3 || username.length > 20) {
-      alert("Username must be between 3 and 20 characters.");
+      setError("Username must be between 3 and 20 characters.");
       return;
     }
 
     if (firstName.length < 3 || firstName.length > 30) {
-      alert("Firstname must be between 3 and 30 characters.");
+      setError("Firstname must be between 3 and 30 characters.");
       return;
     }
 
     if (lastName.length < 3 || lastName.length > 30) {
-      alert("Lastname must be between 3 and 30 characters.");
+      setError("Lastname must be between 3 and 30 characters.");
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      alert("Please enter a valid email address.");
+      setError("Please enter a valid email address.");
       return;
     }
 
@@ -179,12 +182,13 @@ function EditProfile() {
   //////////////////////////////////////////
   ////// ===== DELETE AVATAR ===== /////
   //
-  const handleDeleteAvatar = async () => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete your avatar?"
-    );
-    if (!confirmed) return;
 
+  const confirmDeleteAvatar = function () {
+    setDelConfirmation(true);
+  };
+
+  // -----------delete---------------------------
+  const handleDeleteAvatar = async () => {
     // "http://localhost:3001/api/delete-avatar"
     try {
       const res = await fetch(`${BACKEND_URL}/api/delete-avatar`, {
@@ -212,6 +216,10 @@ function EditProfile() {
     navigate("/profile");
   };
 
+  const closeModal = () => {
+    setError("");
+  };
+
   //
   //////////////////////////////////////////
   ////// ===== RETURN CONTENT ===== /////
@@ -234,7 +242,15 @@ function EditProfile() {
         alt="Avatar image"
       /> */}
 
-      {error && <p className="editProfile__error">{error}</p>}
+      {error && <Modal closeModal={closeModal}>{error}</Modal>}
+      {delConfirmation && (
+        <ModalDelete
+          deleteAvatar={handleDeleteAvatar}
+          setDelConfirmation={setDelConfirmation}
+        >
+          Are you sure you want to remove the avatar image?
+        </ModalDelete>
+      )}
       <form className="editProfile__form" onSubmit={handleSubmit}>
         <div className="editProfile__rowsLayout editProfile__avatarLayout">
           <div className="editProfile__avatarLabelContiner">
@@ -277,7 +293,7 @@ function EditProfile() {
             <button
               type="button"
               className="editProfile__btn editProfile__deleteAvatar"
-              onClick={handleDeleteAvatar}
+              onClick={confirmDeleteAvatar}
             >
               Delete image
             </button>
