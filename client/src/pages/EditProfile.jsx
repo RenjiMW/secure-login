@@ -14,7 +14,7 @@ const initialState = {
   email: "",
   firstName: "",
   lastName: "",
-  avatar: "/imgs/account-default-w.png",
+  avatar: "",
 };
 
 function reducer(state, action) {
@@ -25,7 +25,7 @@ function reducer(state, action) {
         email: action.payload.email,
         firstName: action.payload.firstName,
         lastName: action.payload.lastName,
-        avatar: action.payload.avatar || null,
+        avatar: action.payload.avatar,
       };
     case "userNameChange":
       return { ...state, username: action.payload };
