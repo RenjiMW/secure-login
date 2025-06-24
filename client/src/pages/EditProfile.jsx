@@ -197,7 +197,7 @@ function EditProfile() {
       });
 
       if (res.ok) {
-        dispatch({ type: "avatarChange", payload: null });
+        resetForm(); // 🔁 ponownie pobierz dane użytkownika
       } else {
         const data = await res.json();
         setError(data.message || "Failed to delete avatar");
