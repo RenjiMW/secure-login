@@ -84,9 +84,9 @@ function EditProfile() {
         .catch(() => {
           if (!retry) {
             console.log("Retrying user fetch in 500ms...");
-            setTimeout(() => resetForm(true), 500); // 🕓 retry
+            setTimeout(() => resetForm(true), 500);
           } else {
-            navigate("/login"); // ❌ fail if retry also failed
+            navigate("/login");
           }
         });
     },
@@ -96,9 +96,9 @@ function EditProfile() {
   /////// ======= DATA FETCH ======= //////
   useEffect(() => {
     console.log("FETCHING USER DATA in EditProfile");
-    const timeout = setTimeout(resetForm, 300); // 100ms opóźnienia
+    const timeout = setTimeout(resetForm, 300);
     return () => clearTimeout(timeout);
-  }, [location.key, resetForm]); // reaguj na pathname zamiast key
+  }, [location.key, resetForm]);
 
   //
   //////////////////////////////////////////
@@ -168,14 +168,6 @@ function EditProfile() {
       console.error("Network error:", err);
       setError("Network error");
     }
-
-    // if (res.ok) {
-    //   const data = await res.json(); // <- tu niepotrzebne, bo nie używasz
-    //   navigate("/profile");
-    // } else {
-    //   const text = await res.text(); // zamiast .json()
-    //   console.error("Upload error:", text);
-    // }
   };
 
   //
@@ -197,7 +189,7 @@ function EditProfile() {
       });
 
       if (res.ok) {
-        resetForm(); // 🔁 ponownie pobierz dane użytkownika
+        resetForm();
       } else {
         const data = await res.json();
         setError(data.message || "Failed to delete avatar");
@@ -230,18 +222,6 @@ function EditProfile() {
 
   return (
     <div className="editProfile">
-      {/* <img
-        className="editProfile__img"
-        src={
-          avatar instanceof File
-            ? URL.createObjectURL(avatar)
-            : avatar
-            ? `http://localhost:3001${avatar}`
-            : "/imgs/account-default-w.png"
-        }
-        alt="Avatar image"
-      /> */}
-
       {error && <Modal closeModal={closeModal}>{error}</Modal>}
       {delConfirmation && (
         <ModalDelete

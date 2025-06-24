@@ -14,7 +14,6 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 🧠 prosta walidacja
     if (!username || !password) {
       setError("Please enter both username and password.");
       return;
@@ -49,13 +48,11 @@ function Login() {
           const data = await res.json();
           setError(data.message || "Invalid credentials");
         } catch (err) {
-          // odpowiedź nie była w formacie JSON
           console.log(err);
-          setError("Invalid credentials"); // ← fallback
+          setError("Invalid credentials");
         }
       }
     } catch (err) {
-      // 🛑 np. błąd sieci
       setError("Something went wrong. Please try again later.");
       console.error(err);
     }

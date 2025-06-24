@@ -22,7 +22,7 @@ function Profile() {
       })
       .then((data) => setUser(data))
       .catch(() => navigate("/login"));
-  }, [navigate]); // odpala się tylko raz przy wejściu na widok
+  }, [navigate]);
 
   useEffect(() => {
     if (!sessionStorage.getItem("loggedIn")) {

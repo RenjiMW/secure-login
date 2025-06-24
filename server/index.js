@@ -52,14 +52,6 @@ app.use(
   })
 );
 
-// CORS settings (for local testing)
-// app.use(
-//   cors({
-//     origin: "http://localhost:5173",
-//     credentials: true,
-//   })
-// );
-
 // CORS settings (for deployment on Render)
 app.use(
   cors({
@@ -70,22 +62,6 @@ app.use(
   })
 );
 
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
-// app.use((req, res, next) => {
-//   const contentType = req.headers["content-type"] || "";
-//   if (
-//     contentType.startsWith("application/json") ||
-//     contentType.startsWith("application/x-www-form-urlencoded")
-//   ) {
-//     express.urlencoded({ extended: true })(req, res, () => {
-//       express.json()(req, res, next);
-//     });
-//   } else {
-//     next();
-//   }
-// });
-
 // Konfiguracja katalogu uploadów
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -94,18 +70,6 @@ if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir);
 }
 
-// for local testing
-/** 
-app.use(
-  "/uploads",
-  (req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
-    next();
-  },
-  express.static(path.join(__dirname, "uploads"))
-);
-*/
-// for deployment on Render
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 const storage = multer.diskStorage({
@@ -132,7 +96,6 @@ const upload = multer({
   },
 });
 
-// TODO:
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -142,25 +105,6 @@ app.use(passport.session());
 
 ///////////////////////////////////////
 ///// ====== LOGIN ====== /////////////
-// old by working
-// app.post(
-//   "/api/login",
-//   (req, res, next) => {
-//     console.log("REQ BODY:", req.body);
-
-//     req.body.username = xss(req.body.username);
-//     req.body.password = xss(req.body.password);
-//     next();
-//   }
-
-// passport.authenticate("local"),
-// (req, res) => {
-//   console.log("LOGIN SUCCESS:", req.user);
-//   console.log("SESSION ID:", req.sessionID); // 💡 dodaj to
-//   res.json({ success: true, user: req.user });
-// }
-// );
-
 app.post("/api/login", (req, res, next) => {
   req.body.username = xss(req.body.username);
   req.body.password = xss(req.body.password);
@@ -370,21 +314,6 @@ app.post("/api/delete-avatar", (req, res) => {
   });
 });
 
-//
-////////////////////////////////////////
-///// ====== HANDLE MULTER ERROR ====== ////
-
-// app.use((err, req, res, next) => {
-//   if (err instanceof multer.MulterError) {
-//     return res.status(400).json({ message: "Avatar is too large (max 2 MB)" });
-//   } else if (err.message.startsWith("Only ")) {
-//     return res.status(400).json({ message: err.message });
-//   }
-//   console.error("Unexpected error:", err);
-//   res.status(500).json({ message: "Unexpected server error" });
-//   next(err);
-// });
-
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
 app.get("*", (req, res) => {
@@ -394,10 +323,6 @@ app.get("*", (req, res) => {
 //
 ////////////////////////////////////////
 ///// ====== SERVER LISTEN ====== ////
-
-// app.listen(3001, () => console.log("Server running on http://localhost:3001"));
-
-// For testing the deployment on render
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
