@@ -4,3 +4,4 @@ uploads/*
 !uploads/account-default-w.png
 sessions/
 .env
+dev-notes/

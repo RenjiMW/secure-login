@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "type": "module",
   "main": "index.js",
-"scripts": {
-  "prepare": "mkdir -p uploads",
-  "start": "node index.js",
-  "test": "echo \"Error: no test specified\" && exit 1"
-},
+  "scripts": {
+    "prepare": "mkdir -p uploads",
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "cross-env NODE_ENV=development nodemon index.js"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -23,5 +24,8 @@
     "passport-local": "^1.0.0",
     "session-file-store": "^1.5.0",
     "xss": "^1.0.15"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }

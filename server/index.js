@@ -64,7 +64,7 @@ app.use(
 app.use(
   cors({
     origin: isProduction
-      ? "https://secure-login-full-v2.onrender.com"
+      ? "https://secure-login-full-v3.onrender.com"
       : "http://localhost:5173",
     credentials: true,
   })
@@ -142,22 +142,51 @@ app.use(passport.session());
 
 ///////////////////////////////////////
 ///// ====== LOGIN ====== /////////////
-app.post(
-  "/api/login",
-  (req, res, next) => {
-    console.log("REQ BODY:", req.body);
+// old by working
+// app.post(
+//   "/api/login",
+//   (req, res, next) => {
+//     console.log("REQ BODY:", req.body);
 
-    req.body.username = xss(req.body.username);
-    req.body.password = xss(req.body.password);
-    next();
-  },
-  passport.authenticate("local"),
-  (req, res) => {
-    console.log("LOGIN SUCCESS:", req.user);
-    console.log("SESSION ID:", req.sessionID); // 💡 dodaj to
-    res.json({ success: true, user: req.user });
-  }
-);
+//     req.body.username = xss(req.body.username);
+//     req.body.password = xss(req.body.password);
+//     next();
+//   }
+
+// passport.authenticate("local"),
+// (req, res) => {
+//   console.log("LOGIN SUCCESS:", req.user);
+//   console.log("SESSION ID:", req.sessionID); // 💡 dodaj to
+//   res.json({ success: true, user: req.user });
+// }
+// );
+
+app.post("/api/login", (req, res, next) => {
+  req.body.username = xss(req.body.username);
+  req.body.password = xss(req.body.password);
+
+  passport.authenticate("local", (err, user, info) => {
+    if (err) {
+      console.error("Auth error:", err);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+
+    if (!user) {
+      return res
+        .status(401)
+        .json({ message: info?.message || "Invalid credentials" });
+    }
+
+    req.logIn(user, (err) => {
+      if (err) {
+        console.error("Login session error:", err);
+        return res.status(500).json({ message: "Login failed" });
+      }
+
+      return res.json({ success: true, user });
+    });
+  })(req, res, next);
+});
 
 ///////////////////////////////////////////////
 ///// ======= GET USER DATA ======== /////////////

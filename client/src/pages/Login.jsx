@@ -45,9 +45,14 @@ function Login() {
         sessionStorage.setItem("loggedIn", "true");
         navigate("/profile");
       } else {
-        // 🧠 próba odczytania wiadomości błędu z serwera
-        const data = await res.json();
-        setError(data.message || "Invalid credentials");
+        try {
+          const data = await res.json();
+          setError(data.message || "Invalid credentials");
+        } catch (err) {
+          // odpowiedź nie była w formacie JSON
+          console.log(err);
+          setError("Invalid credentials"); // ← fallback
+        }
       }
     } catch (err) {
       // 🛑 np. błąd sieci
