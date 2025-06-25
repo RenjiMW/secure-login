@@ -13,10 +13,18 @@
   &__window {
     width: fit-content;
     max-width: 85%;
-    margin: 30% auto auto auto;
+    margin: 50% auto auto auto;
     text-align: center;
     padding: 20px 20px;
     background-color: rgba(0, 0, 0, 0.9);
     border-radius: 15px;
+
+    @media (min-width: 768px) {
+      margin: 25% auto auto auto;
+    }
+
+    @media (min-width: 1025px) {
+      margin: 20% auto auto auto;
+    }
   }
 }

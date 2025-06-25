@@ -26,7 +26,6 @@ function Login() {
     const cleanUsername = sanitizeInput(username);
     const cleanPassword = password;
 
-    // "http://localhost:3001/api/login"
     try {
       const res = await fetch(`${BACKEND_URL}/api/login`, {
         method: "POST",

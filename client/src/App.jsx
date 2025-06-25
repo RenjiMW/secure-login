@@ -9,7 +9,6 @@ import Profile from "./pages/Profile";
 import EditProfile from "./pages/EditProfile";
 
 function App() {
-  console.log("REACT — render main app");
   return (
     <Router>
       <Routes>

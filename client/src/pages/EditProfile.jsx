@@ -55,17 +55,12 @@ function EditProfile() {
 
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(
-    "//////////////////////// EditProfile Mounted ////////////////////////"
-  );
+
   //////////////////////////////////////////
   /////// ======= RESET FORM ======= //////
-  console.log(username, email, firstName, lastName, avatar);
 
   const resetForm = useCallback(
     (retry = false) => {
-      console.log("location change");
-
       setIsLoading(true);
       dispatch({ type: "setUser", payload: initialState });
 
@@ -83,7 +78,6 @@ function EditProfile() {
         })
         .catch(() => {
           if (!retry) {
-            console.log("Retrying user fetch in 500ms...");
             setTimeout(() => resetForm(true), 500);
           } else {
             navigate("/login");
@@ -95,7 +89,6 @@ function EditProfile() {
   //////////////////////////////////////////
   /////// ======= DATA FETCH ======= //////
   useEffect(() => {
-    console.log("FETCHING USER DATA in EditProfile");
     const timeout = setTimeout(resetForm, 300);
     return () => clearTimeout(timeout);
   }, [location.key, resetForm]);
@@ -161,7 +154,6 @@ function EditProfile() {
         navigate("/profile");
       } else {
         const text = await res.text();
-        console.error("Upload error:", text);
         setError("Upload error: " + text);
       }
     } catch (err) {

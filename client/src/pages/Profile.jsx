@@ -7,12 +7,7 @@ function Profile() {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
-  console.log(user);
-
   useEffect(() => {
-    console.log("Fetching user data on /profile mount");
-
-    // "http://localhost:3001/api/user"
     fetch(`${BACKEND_URL}/api/user`, {
       credentials: "include",
     })
@@ -26,7 +21,6 @@ function Profile() {
 
   useEffect(() => {
     if (!sessionStorage.getItem("loggedIn")) {
-      // "http://localhost:3001/api/logout"
       fetch(`${BACKEND_URL}/api/logout`, {
         method: "POST",
         credentials: "include",
@@ -57,7 +51,6 @@ function Profile() {
         <button
           className="profileHeader__logoutBtn"
           onClick={async () => {
-            // "http://localhost:3001/api/logout";
             await fetch(`${BACKEND_URL}/api/logout`, {
               method: "POST",
               credentials: "include",

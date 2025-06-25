@@ -135,12 +135,6 @@ app.post("/api/login", (req, res, next) => {
 ///////////////////////////////////////////////
 ///// ======= GET USER DATA ======== /////////////
 app.get("/api/user", (req, res) => {
-  console.log("AUTH CHECK:", {
-    sessionID: req.sessionID,
-    isAuthenticated: req.isAuthenticated(),
-    user: req.user,
-  });
-
   if (req.isAuthenticated()) {
     res.json(req.user);
   } else {
@@ -174,16 +168,10 @@ app.post("/api/update-profile", (req, res, next) => {
     }
 
     try {
-      // dalej cały kod z req.file, req.body itd.
-      console.log("REQ FILE:", req.file);
-      console.log("REQ BODY:", req.body);
-      // uwaga: wszystko musi być wewnątrz tego callbacka!
       if (!req.isAuthenticated()) {
         return res.status(401).json({ message: "Unauthorized" });
       }
 
-      //   const username = xss(req.body.username);
-      // ... cała logika
       // ============================================================
       // === WALIDACJA i sanityzacja danych wejściowych =============
 
@@ -259,8 +247,7 @@ app.post("/api/update-profile", (req, res, next) => {
         // Zapisanie ścieżki do nowego pliku
         users[userIndex].avatar = `/uploads/${req.file.filename}`;
       }
-      // -------------------
-      // to dał mi gpt na końcu
+
       saveUsers(users);
       res.json({ message: "Profile updated", user: users[userIndex] });
     } catch (error) {

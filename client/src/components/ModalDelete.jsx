@@ -3,7 +3,7 @@ function ModalDelete({ children, deleteAvatar, setDelConfirmation }) {
     deleteAvatar();
     setDelConfirmation(false);
   };
-  const abort = function () {
+  const cancel = function () {
     setDelConfirmation(false);
   };
 
@@ -12,7 +12,7 @@ function ModalDelete({ children, deleteAvatar, setDelConfirmation }) {
       <div className="modal__window">
         <h4>{children}</h4>
         <button onClick={confirm}>Ok</button>
-        <button onClick={abort}>Cancel</button>
+        <button onClick={cancel}>Cancel</button>
       </div>
     </div>
   );
