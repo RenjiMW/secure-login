@@ -1,14 +1,19 @@
+// 📦 React & Router imports
 import { useEffect, useReducer, useState, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+// 🧱 UI Components for modals
 import Modal from "../components/Modal";
 import ModalDelete from "../components/ModalDelete";
 
+// 🌐 Backend API base URL (from .env)
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
+// 🧼 Helper function to sanitize input against HTML injection
 function sanitizeInput(str) {
   return str.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
+// 🧾 Initial state for the user profile form
 const initialState = {
   username: "",
   email: "",
@@ -17,6 +22,7 @@ const initialState = {
   avatar: "",
 };
 
+// 🔁 Reducer function for managing form state
 function reducer(state, action) {
   switch (action.type) {
     case "setUser":
@@ -42,29 +48,31 @@ function reducer(state, action) {
   }
 }
 
-//
-//////////////////////////////////////////
-/// ======= EDIT PROFILE VIEW ======= ////
-//
+// =======================================
+// 📄 EditProfile Component
+// =======================================
 function EditProfile() {
+  // 🎮 useReducer to manage form state
   const [{ username, email, firstName, lastName, avatar }, dispatch] =
     useReducer(reducer, initialState);
+  // ⚠️ Error and loading state
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  // 🗑️ Avatar delete confirmation modal visibility
   const [delConfirmation, setDelConfirmation] = useState(false);
 
+  // 🧭 Navigation and route location
   const navigate = useNavigate();
   const location = useLocation();
 
-  //////////////////////////////////////////
-  /////// ======= RESET FORM ======= //////
-
+  // =======================================
+  // 🔄 Fetch user data & reset form
+  // =======================================
   const resetForm = useCallback(
     (retry = false) => {
       setIsLoading(true);
       dispatch({ type: "setUser", payload: initialState });
 
-      // "http://localhost:3001/api/user"
       fetch(`${BACKEND_URL}/api/user`, {
         credentials: "include",
       })
@@ -86,21 +94,20 @@ function EditProfile() {
     },
     [navigate]
   );
-  //////////////////////////////////////////
-  /////// ======= DATA FETCH ======= //////
+
+  // ⏱️ Run resetForm on mount or route change
   useEffect(() => {
     const timeout = setTimeout(resetForm, 300);
     return () => clearTimeout(timeout);
   }, [location.key, resetForm]);
 
-  //
-  //////////////////////////////////////////
-  /////// ======= FORM SUBMIT ======= //////
-  //
+  // =======================================
+  // 📤 Submit form data
+  // =======================================
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // VALIDATION
+    // ✅ Client-side validation
     if (!username || !email || !firstName || !lastName) {
       setError("All fields are required!");
       return;
@@ -127,13 +134,13 @@ function EditProfile() {
       return;
     }
 
-    // SANITYZACJA
+    // 📦 Prepare form data for sending (including optional avatar)
     const cleanUsername = sanitizeInput(username);
     const cleanEmail = sanitizeInput(email);
     const cleanFirstName = sanitizeInput(firstName);
     const cleanLastName = sanitizeInput(lastName);
 
-    // SEND DATA
+    // 📬 Send data to the backend
     const formData = new FormData();
     formData.append("username", cleanUsername);
     formData.append("email", cleanEmail);
@@ -144,7 +151,6 @@ function EditProfile() {
     }
 
     try {
-      // "http://localhost:3001/api/update-profile"
       const res = await fetch(`${BACKEND_URL}/api/update-profile`, {
         method: "POST",
         credentials: "include",
@@ -162,18 +168,14 @@ function EditProfile() {
     }
   };
 
-  //
-  //////////////////////////////////////////
-  ////// ===== DELETE AVATAR ===== /////
-  //
-
+  // =======================================
+  // 🗑️ Delete avatar logic
+  // =======================================
   const confirmDeleteAvatar = function () {
     setDelConfirmation(true);
   };
 
-  // -----------delete---------------------------
   const handleDeleteAvatar = async () => {
-    // "http://localhost:3001/api/delete-avatar"
     try {
       const res = await fetch(`${BACKEND_URL}/api/delete-avatar`, {
         method: "POST",
@@ -192,10 +194,9 @@ function EditProfile() {
     }
   };
 
-  //
-  //////////////////////////////////////////
-  ////// ===== HANDLE CANCEL BTN ===== /////
-  //
+  // =======================================
+  // 🛑 Cancel edit & clear modal
+  // =======================================
   const handleCancel = () => {
     navigate("/profile");
   };
@@ -204,14 +205,16 @@ function EditProfile() {
     setError("");
   };
 
-  //
-  //////////////////////////////////////////
-  ////// ===== RETURN CONTENT ===== /////
-  //
+  // =======================================
+  // ⌛ Loading message
+  // =======================================
   if (isLoading) {
     return <p className="editProfile">Loading...</p>;
   }
 
+  // ////////////////////////////////////////////
+  // =================== JSX ====================
+  // ////////////////////////////////////////////
   return (
     <div className="editProfile">
       {error && <Modal closeModal={closeModal}>{error}</Modal>}

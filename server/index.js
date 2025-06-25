@@ -1,3 +1,4 @@
+// 📦 Core modules and middleware imports
 import fs from "fs";
 import multer from "multer";
 import path from "path";
@@ -12,9 +13,11 @@ import initializePassport from "./auth/passport-config.js";
 import { getUsers } from "./auth/passport-config.js";
 import { fileURLToPath } from "url";
 
+// 🚀 Initialize Express app
 const app = express();
 app.set("trust proxy", 1);
 
+// 🛡️ Set Content Security Policy with Helmet (protect image sources)
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
@@ -24,15 +27,17 @@ app.use(
   })
 );
 
+// 🌍 Detect production environment (used for cookies and CORS)
 const isProduction = process.env.NODE_ENV === "production";
 
+// 💾 Helper function to persist users to users.json
 const saveUsers = (users) =>
   fs.writeFileSync("users.json", JSON.stringify(users, null, 2));
 
-// ========================
-// === SESSIONS CONFIG ===
-// ========================
-
+// ==========================
+// === 🧠 SESSIONS CONFIG ===
+// ==========================
+// Configure session middleware with file-based session storage
 const FileStoreInstance = FileStore(session);
 app.use(
   session({
@@ -47,12 +52,15 @@ app.use(
     cookie: {
       httpOnly: true,
       sameSite: "lax",
-      secure: isProduction, // true tylko na Renderze
+      secure: isProduction, // cookies are secure only in production
     },
   })
 );
 
-// CORS settings (for deployment on Render)
+// =============================
+// === 🌐 CORS CONFIGURATION ===
+// =============================
+// Allow frontend access (either from localhost or Render)
 app.use(
   cors({
     origin: isProduction
@@ -62,7 +70,10 @@ app.use(
   })
 );
 
-// Konfiguracja katalogu uploadów
+// =============================
+// === 📁 FILE UPLOADS SETUP ===
+// =============================
+// Create and expose the uploads directory for serving avatar images
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const uploadsDir = path.join(__dirname, "uploads");
@@ -72,6 +83,7 @@ if (!fs.existsSync(uploadsDir)) {
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+// Configure multer for avatar image uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.join(__dirname, "uploads"));
@@ -85,7 +97,7 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage,
   limits: {
-    fileSize: 2 * 1024 * 1024, // 2 MB
+    fileSize: 2 * 1024 * 1024, // 2 Max
   },
   fileFilter: (req, file, cb) => {
     const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
@@ -96,19 +108,28 @@ const upload = multer({
   },
 });
 
+// =============================================
+// === 🧱 Middleware for JSON and form data ====
+// ==============================================
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// ================================
+// ==== 🔐 PASSPORT AUTH INIT ====
+// ================================
 initializePassport(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
 ///////////////////////////////////////
-///// ====== LOGIN ====== /////////////
+// 🔑 LOGIN ROUTE — /api/login
+///////////////////////////////////////
 app.post("/api/login", (req, res, next) => {
+  // 🧼 Sanitize input against XSS
   req.body.username = xss(req.body.username);
   req.body.password = xss(req.body.password);
 
+  // Authenticate user using local strategy
   passport.authenticate("local", (err, user, info) => {
     if (err) {
       console.error("Auth error:", err);
@@ -121,6 +142,7 @@ app.post("/api/login", (req, res, next) => {
         .json({ message: info?.message || "Invalid credentials" });
     }
 
+    // Create session after login
     req.logIn(user, (err) => {
       if (err) {
         console.error("Login session error:", err);
@@ -132,8 +154,9 @@ app.post("/api/login", (req, res, next) => {
   })(req, res, next);
 });
 
-///////////////////////////////////////////////
-///// ======= GET USER DATA ======== /////////////
+///////////////////////////////////////////
+// 🧠 GET AUTHENTICATED USER — /api/user
+///////////////////////////////////////////
 app.get("/api/user", (req, res) => {
   if (req.isAuthenticated()) {
     res.json(req.user);
@@ -143,7 +166,8 @@ app.get("/api/user", (req, res) => {
 });
 
 ///////////////////////////////////////
-///// ====== LOGOUT ====== ////////////
+// 🚪 LOGOUT ROUTE — /api/logout
+///////////////////////////////////////
 app.post("/api/logout", (req, res) => {
   req.logout((err) => {
     if (err) return res.status(500).send("Logout failed");
@@ -151,13 +175,12 @@ app.post("/api/logout", (req, res) => {
   });
 });
 
-//
 ///////////////////////////////////////////////////////////////
-// ====== UPDATE PROFILE — aktualizacja profilu użytkownika ===
-// Endpoint odpowiedzialny za edycję danych i avatara użytkownika
+// ✏️ UPDATE PROFILE — /api/update-profile
+// Allows updating user details and avatar
 ///////////////////////////////////////////////////////////////
-
 app.post("/api/update-profile", (req, res, next) => {
+  // Handle file upload
   upload.single("avatar")(req, res, (err) => {
     if (err instanceof multer.MulterError) {
       return res.status(400).json({ message: "Multer error: " + err.message });
@@ -173,7 +196,7 @@ app.post("/api/update-profile", (req, res, next) => {
       }
 
       // ============================================================
-      // === WALIDACJA i sanityzacja danych wejściowych =============
+      // 🧼 Validate and sanitize fields
 
       const username = xss(req.body.username);
       const email = xss(req.body.email);
@@ -204,7 +227,7 @@ app.post("/api/update-profile", (req, res, next) => {
       }
 
       // ===========================================================
-      // === POBIERANIE i aktualizacja użytkownika w bazie =========
+      // 🧠 Find user and update data
 
       const users = getUsers();
       const userIndex = users.findIndex((u) => u.id === req.user.id);
@@ -212,7 +235,7 @@ app.post("/api/update-profile", (req, res, next) => {
         return res.status(404).json({ message: "User not found" });
       }
 
-      // Sprawdzenie czy wybrana nazwa użytkownika nie jest już zajęta
+      // Checking if the selected username is not already taken
       const usernameTaken = users.some(
         (u, i) => u.username === username && i !== userIndex
       );
@@ -220,19 +243,19 @@ app.post("/api/update-profile", (req, res, next) => {
         return res.status(400).json({ message: "Username already taken" });
       }
 
-      // Aktualizacja danych tekstowych użytkownika
+      // Update text fields
       users[userIndex].username = username;
       users[userIndex].email = email;
       users[userIndex].firstName = firstName;
       users[userIndex].lastName = lastName;
 
       // ===========================================================
-      // === OBSŁUGA nowego avatara (jeśli został przesłany) =======
+      // Handle new avatar file
 
       if (req.file) {
         const oldAvatar = users[userIndex].avatar;
 
-        // Usunięcie starego pliku jeśli istnieje
+        // Delete old file if exists
         if (oldAvatar && oldAvatar.startsWith("/uploads/")) {
           const oldPath = path.join(__dirname, oldAvatar);
           fs.unlink(oldPath, (err) => {
@@ -244,10 +267,11 @@ app.post("/api/update-profile", (req, res, next) => {
           });
         }
 
-        // Zapisanie ścieżki do nowego pliku
+        // Saving path to new file
         users[userIndex].avatar = `/uploads/${req.file.filename}`;
       }
 
+      // Save updated user
       saveUsers(users);
       res.json({ message: "Profile updated", user: users[userIndex] });
     } catch (error) {
@@ -257,11 +281,9 @@ app.post("/api/update-profile", (req, res, next) => {
   });
 });
 
-//
 ///////////////////////////////////////////////////////////////
-// ====== DELETE AVATAR ======
+// 🗑️ DELETE AVATAR — /api/delete-avatar
 ///////////////////////////////////////////////////////////////
-
 app.post("/api/delete-avatar", (req, res) => {
   if (!req.isAuthenticated()) {
     return res.status(401).json({ message: "Unauthorized" });
@@ -275,14 +297,14 @@ app.post("/api/delete-avatar", (req, res) => {
 
   const oldAvatar = users[userIndex].avatar;
 
-  // 🛑 Zablokuj usunięcie domyślnego avatara
+  // Prevent deleting default avatar
   if (!oldAvatar || !oldAvatar.startsWith("/uploads/")) {
     return res
       .status(400)
       .json({ message: "Default avatar cannot be deleted" });
   }
 
-  // 🗑️ Usuń tylko własne avatary
+  // Delete avatar file
   const oldPath = path.join(__dirname, oldAvatar);
   fs.unlink(oldPath, (err) => {
     if (err) {
@@ -301,15 +323,18 @@ app.post("/api/delete-avatar", (req, res) => {
   });
 });
 
+// =============================================
+// === 🧱 SERVE FRONTEND (Vite build folder) ===
+// =============================================
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/dist/index.html"));
 });
 
-//
-////////////////////////////////////////
-///// ====== SERVER LISTEN ====== ////
+// ============================================
+// ============ 🚀 START SERVER ==============
+// ============================================
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

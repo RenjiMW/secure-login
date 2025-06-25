@@ -1,35 +1,50 @@
+// 🧠 React and routing hooks
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+// 🌐 Base URL for backend API (from .env file)
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
+// ===================================
+// 👤 Profile component (view only)
+// ===================================
 function Profile() {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
+  // ================================
+  // 🔄 Fetch user data on mount
+  // ================================
   useEffect(() => {
     fetch(`${BACKEND_URL}/api/user`, {
-      credentials: "include",
+      credentials: "include", // 🔒 Include cookies for auth session
     })
       .then((res) => {
         if (!res.ok) throw new Error("Unauthorized");
         return res.json();
       })
-      .then((data) => setUser(data))
-      .catch(() => navigate("/login"));
+      .then((data) => setUser(data)) // ✅ Store user data
+      .catch(() => navigate("/login")); // 🔁 Redirect to login if unauthorized
   }, [navigate]);
 
+  // ================================================
+  // 🔐 Failsafe — logout if session marker is gone
+  // ================================================
   useEffect(() => {
     if (!sessionStorage.getItem("loggedIn")) {
       fetch(`${BACKEND_URL}/api/logout`, {
         method: "POST",
         credentials: "include",
-      }).finally(() => navigate("/login"));
+      }).finally(() => navigate("/login")); // Redirect after logout
     }
   }, [navigate]);
 
+  // 🕗 Show loading state while fetching
   if (!user) return <p>Loading...</p>;
 
+  // ////////////////////////////////////////////
+  // =================== JSX ====================
+  // ////////////////////////////////////////////
   return (
     <div className="profileContainer">
       <section className="profileHeader">

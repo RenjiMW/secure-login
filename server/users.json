@@ -6,7 +6,7 @@
     "email": "mcperson.human@example.com",
     "firstName": "Human",
     "lastName": "McPerson",
-    "avatar": "/imgs/account-default-w.png"
+    "avatar": null
   },
   {
     "id": 2,
