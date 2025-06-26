@@ -16,6 +16,10 @@
     margin: auto;
     border: 2px solid #ffffff;
     border-radius: 50%;
+    background-image: url("/imgs/account-default-w.png");
+    background-repeat: no-repeat;
+    background-size: cover; // lub contain albo np. 200px 200px
+    background-position: center;
   }
 
   &__info {
@@ -64,8 +68,6 @@
     &__img {
       grid-area: img;
       margin-right: 1rem;
-      object-fit: cover;
-      background-color: #f0f0f0;
     }
 
     &__info {
