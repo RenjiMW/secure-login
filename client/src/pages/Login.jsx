@@ -2,9 +2,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-// 🧱 UI Components for modals
-import Spinner from "../components/Spinner";
-
 // 🌐 Backend API base URL (from .env file)
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 

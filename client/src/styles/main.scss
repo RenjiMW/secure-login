@@ -1,9 +1,7 @@
-// @use "variables";
-@use "reset";
-@use "base";
-// @use "layout";
-@use "./_components/loginPage";
-@use "./_components/profilePage";
-@use "./_components/editProfile";
-@use "./_components/Modal";
-@use "./_components/_spinner.scss";
+@use "./base/reset";
+@use "./base/base";
+@use "./pages/loginPage";
+@use "./pages/profilePage";
+@use "./pages/editProfile";
+@use "./components/modal";
+@use "./components/spinner";
