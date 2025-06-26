@@ -2,8 +2,9 @@
 import { useEffect, useReducer, useState, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 // 🧱 UI Components for modals
-import Modal from "../components/Modal";
+import ModalError from "../components/ModalError";
 import ModalDelete from "../components/ModalDelete";
+import Spinner from "../components/Spinner";
 
 // 🌐 Backend API base URL (from .env)
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
@@ -209,7 +210,7 @@ function EditProfile() {
   // ⌛ Loading message
   // =======================================
   if (isLoading) {
-    return <p className="editProfile__loading">Loading...</p>;
+    return <Spinner />;
   }
 
   // ////////////////////////////////////////////
@@ -217,7 +218,7 @@ function EditProfile() {
   // ////////////////////////////////////////////
   return (
     <div className="editProfile">
-      {error && <Modal closeModal={closeModal}>{error}</Modal>}
+      {error && <ModalError closeModal={closeModal}>{error}</ModalError>}
       {delConfirmation && (
         <ModalDelete
           deleteAvatar={handleDeleteAvatar}

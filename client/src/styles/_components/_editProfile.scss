@@ -10,6 +10,10 @@
     border: 2px solid #ffffff;
     border-radius: 50%;
     margin-bottom: 2rem;
+    background-image: url("/imgs/account-default-w.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
   }
 
   &__form {

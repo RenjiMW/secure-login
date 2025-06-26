@@ -1,4 +1,4 @@
-function Modal({ children, closeModal }) {
+function ModalError({ children, closeModal }) {
   function cleanErrorMessage(str) {
     return str
       .replace(/[{}]/g, "")
@@ -18,4 +18,4 @@ function Modal({ children, closeModal }) {
   );
 }
 
-export default Modal;
+export default ModalError;

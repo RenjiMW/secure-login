@@ -2,7 +2,7 @@
   text-align: center;
   max-width: 36rem;
   margin: 0 auto;
-  min-height: 100vh;
+  min-height: calc(100vh - 10vw);
   padding-bottom: 3rem;
 }
 
@@ -28,7 +28,6 @@
   }
 
   &__logoutBtn {
-    padding: 0.4rem 3rem;
     margin: auto;
     grid-area: logout;
   }
@@ -53,10 +52,9 @@
 
 @media (min-width: 768px) {
   .profileContainer {
-    text-align: center;
     max-width: 60rem;
     margin: 10% auto 0 auto;
-    height: 100vh;
+    height: calc(100vh - 10vw);
   }
 
   .profileHeader {

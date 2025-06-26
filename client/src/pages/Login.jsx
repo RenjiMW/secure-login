@@ -2,6 +2,9 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
+// 🧱 UI Components for modals
+import Spinner from "../components/Spinner";
+
 // 🌐 Backend API base URL (from .env file)
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -65,14 +68,14 @@ function Login() {
           const data = await res.json();
           setError(data.message || "Invalid credentials");
         } catch (err) {
-          console.log(err);
+          console.error("Login parse error:", err);
           setError("Invalid credentials");
         }
       }
     } catch (err) {
       // 🛑 Handle network errors
+      console.error("Network login error:", err);
       setError("Something went wrong. Please try again later.");
-      console.error(err);
     }
   };
 
@@ -118,7 +121,7 @@ function Login() {
           Login
         </button>
 
-        {error && <p className="errorMessage">{error}</p>}
+        {error && <p className="loginForm__errorMessage">{error}</p>}
       </form>
     </div>
   );

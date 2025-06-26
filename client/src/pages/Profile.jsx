@@ -2,6 +2,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+// 🧱 UI Components for modals
+import Spinner from "../components/Spinner";
+
 // 🌐 Base URL for backend API (from .env file)
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -40,7 +43,7 @@ function Profile() {
   }, [navigate]);
 
   // 🕗 Show loading state while fetching
-  if (!user) return <p>Loading...</p>;
+  if (!user) return <Spinner />;
 
   // ////////////////////////////////////////////
   // =================== JSX ====================

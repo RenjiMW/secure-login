@@ -1,0 +1,39 @@
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20% 0;
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &__text {
+    display: block;
+    margin: auto;
+    margin-bottom: 2rem;
+  }
+
+  &__animation {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #fff;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    margin: auto;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+  }
+
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}
