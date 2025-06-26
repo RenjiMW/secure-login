@@ -209,7 +209,7 @@ function EditProfile() {
   // ⌛ Loading message
   // =======================================
   if (isLoading) {
-    return <p className="editProfile">Loading...</p>;
+    return <p className="editProfile__loading">Loading...</p>;
   }
 
   // ////////////////////////////////////////////
@@ -228,7 +228,7 @@ function EditProfile() {
       )}
       <form className="editProfile__form" onSubmit={handleSubmit}>
         <div className="editProfile__rowsLayout editProfile__avatarLayout">
-          <div className="editProfile__avatarLabelContiner">
+          <div className="editProfile__avatarLabelContainer">
             <label htmlFor="avatar" className="editProfile__avatarLabel">
               <img
                 className="editProfile__img"
@@ -244,16 +244,16 @@ function EditProfile() {
             </label>
           </div>
 
-          <div className="avatarContainer">
-            <label
-              className="editProfile__btn editProfile__upload"
-              htmlFor="avatar"
-            >
-              Upload image
-            </label>
-          </div>
+          <button
+            type="button"
+            className="editProfile__btn editProfile__upload"
+            onClick={() => document.getElementById("avatar").click()}
+          >
+            Upload image
+          </button>
+
           <input
-            className="fileUpload__inputHidden"
+            className="editProfile__fileUpload--inputHidden"
             type="file"
             id="avatar"
             name="avatar"
@@ -267,7 +267,7 @@ function EditProfile() {
           {avatar && typeof avatar === "string" && (
             <button
               type="button"
-              className="editProfile__btn editProfile__deleteAvatar"
+              className="editProfile__deleteAvatar"
               onClick={confirmDeleteAvatar}
             >
               Delete image

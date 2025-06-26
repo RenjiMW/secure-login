@@ -23,16 +23,19 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    // margin-left: 10%;
-    // margin-right: 10%;
   }
 
-  &__avatarLabelContiner {
-    margin: auto;
+  &__avatarLabelContainer {
+    align-self: center;
   }
 
   &__input {
     width: 25rem;
+
+    &:focus {
+      outline: 2px solid #007bff;
+      outline-offset: 2px;
+    }
   }
 
   &__btn {
@@ -51,20 +54,6 @@
     }
   }
 
-  &__upload {
-    grid-area: btnUpload;
-    height: 33px;
-    background-color: rgb(240, 240, 240);
-    color: black;
-    text-align: center;
-    border: 2px outset rgb(0, 0, 0);
-    cursor: pointer;
-  }
-
-  &__deleteAvatar {
-    grid-area: btnDelete;
-  }
-
   &__upload,
   &__deleteAvatar {
     margin-top: 0;
@@ -79,44 +68,24 @@
     font-weight: bold;
   }
 
-  /////////////////////////////////////////
-  /// MEDIA QUERIES
-  @media (min-width: 768px) {
-    &__avatarLayout {
-      // border: red 2px solid;
-      display: grid;
-      grid-template-columns: auto auto;
-      grid-template-rows: 1fr 1fr;
-      grid-template-areas:
-        "avatar btnUpload"
-        "avatar btnDelete";
-    }
+  &__fileUpload--inputHidden {
+    display: none;
+  }
 
-    &__avatarLabelContiner {
-      grid-area: avatar;
-      margin: 1rem;
-      // background-color: rgb(65, 157, 38);
-    }
-
-    // &__avatarLabel {
-    // }
-
-    &__img {
-      margin: 0;
-    }
-
-    &__upload {
-      margin-top: 2rem;
-    }
+  &__upload {
+    margin-bottom: 1rem;
   }
 }
 
+/////////////////////////////////////////
+/// MEDIA QUERIES
 @media (min-width: 768px) {
   .editProfile {
     margin-top: 6%;
 
     &__avatarLayout {
       display: grid;
+      justify-items: center;
       grid-template-columns: auto auto;
       grid-template-rows: 1fr 1fr;
       grid-template-areas:
@@ -124,9 +93,15 @@
         "avatar btnDelete";
     }
 
-    &__avatarLabelContiner {
+    &__avatarLabelContainer {
+      justify-self: center;
       grid-area: avatar;
       margin: 1rem;
+    }
+
+    &__avatarLabel {
+      display: flex;
+      justify-content: center;
     }
 
     &__img {
@@ -135,17 +110,11 @@
 
     &__upload {
       margin-top: 2rem;
+      grid-area: btnUpload;
+    }
+
+    &__deleteAvatar {
+      grid-area: btnDelete;
     }
   }
-}
-
-.fileUpload__inputHidden {
-  display: none;
-}
-
-.avatarContainer {
-  display: flex;
-  align-items: center;
-
-  margin-bottom: 1rem;
 }

@@ -1,6 +1,6 @@
 .loginContainer {
   text-align: center;
-  width: 30rem;
+  width: min(90%, 30rem);
   margin: 0 auto;
   height: 100vh;
 }
@@ -26,25 +26,29 @@
     margin-bottom: 1.8rem;
   }
 
-  //   &__label {
-  //     margin-right: 7px;
-  //   }
-
   &__input {
     width: 100%;
     font-size: 1.5rem;
     border-radius: 6px;
-  }
 
-  //   &__passwordDiv {
-  //     margin-bottom: 1.5rem;
-  //   }
+    &:focus {
+      outline: 2px solid #007bff;
+      outline-offset: 2px;
+    }
+  }
 
   &__submitBtn {
     margin-top: 4rem;
+    width: fit-content;
     padding: 0.4rem 5rem;
-    border-radius: 14px;
     font-size: 2rem;
-    font-weight: bold;
   }
+}
+
+.errorMessage {
+  margin-top: 15px;
+  color: rgb(242, 223, 223);
+  background-color: rgb(138, 46, 7);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
 }

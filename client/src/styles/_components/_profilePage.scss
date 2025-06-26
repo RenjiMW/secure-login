@@ -1,12 +1,9 @@
 .profileContainer {
-  //   display: flex;
-  //   flex-direction: column;
-  //   align-items: center;
-  //   padding: 20px;
   text-align: center;
   max-width: 36rem;
   margin: 0 auto;
-  height: 100vh;
+  min-height: 100vh;
+  padding-bottom: 3rem;
 }
 
 .profileHeader {
@@ -29,9 +26,6 @@
   &__logoutBtn {
     padding: 0.4rem 3rem;
     margin: auto;
-    border-radius: 14px;
-    font-size: 1.6rem;
-    font-weight: bold;
     grid-area: logout;
   }
 }
@@ -53,15 +47,6 @@
   }
 }
 
-.editProfileBtn {
-  margin-top: 6rem;
-  width: 14rem;
-  padding: 0.4rem 0;
-  border-radius: 14px;
-  font-size: 1.8rem;
-  font-weight: bold;
-}
-
 @media (min-width: 768px) {
   .profileContainer {
     text-align: center;
@@ -79,6 +64,8 @@
     &__img {
       grid-area: img;
       margin-right: 1rem;
+      object-fit: cover;
+      background-color: #f0f0f0;
     }
 
     &__info {
