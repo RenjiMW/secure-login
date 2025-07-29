@@ -27,7 +27,7 @@ export default defineConfig(({ mode }) => {
     define: {
       "import.meta.env.VITE_BACKEND_URL": JSON.stringify(
         isProduction
-          ? "https://secure-login-full.onrender.com"
+          ? "https://secure-login-backend-sfga.onrender.com"
           : "http://localhost:3001"
       ),
     },
