@@ -326,11 +326,11 @@ app.post("/api/delete-avatar", (req, res) => {
 // =============================================
 // === 🧱 SERVE FRONTEND (Vite build folder) ===
 // =============================================
-app.use(express.static(path.join(__dirname, "../client/dist")));
+// app.use(express.static(path.join(__dirname, "../client/dist")));
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/dist/index.html"));
-});
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "../client/dist/index.html"));
+// });
 
 // ============================================
 // ============ 🚀 START SERVER ==============
