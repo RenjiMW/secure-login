@@ -64,7 +64,7 @@ app.use(
 app.use(
   cors({
     origin: isProduction
-      ? "https://secure-login-backend-sfga.onrender.com"
+      ? "https://secure-login-frontend.onrender.com"
       : "http://localhost:5173",
     credentials: true,
   })
